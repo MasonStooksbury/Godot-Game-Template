@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://7vh61i6cu184"]
+
+[ext_resource type="FontFile" uid="uid://bsek567kn2ciy" path="res://Shared/TitleScreen/Outrun future.otf" id="2_uacsf"]
+[ext_resource type="PackedScene" uid="uid://7ul6g2a0s5l8" path="res://Shared/TitleScreen/SettingsButton.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dbwp1lhpowj1v" path="res://Shared/TitleScreen/CreditsButton.tscn" id="4"]
+[ext_resource type="FontFile" uid="uid://dpw7v4rm1ofwh" path="res://Shared/TitleScreen/Cyberthrone-7nP4.ttf" id="4_qyi8o"]
+[ext_resource type="PackedScene" uid="uid://br55ew0i4r1sg" path="res://Shared/TitleScreen/HowToButton.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://ba21rpgciikux" path="res://Shared/TitleScreen/NewGameButton.tscn" id="6"]
+[ext_resource type="Script" path="res://Shared/TitleScreen/TitleScreen.gd" id="7"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7")
+
+[node name="Menu" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(1000, 550)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.0
+offset_top = -24.0
+offset_right = 6.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_uacsf")
+theme_override_font_sizes/normal_font_size = 80
+bbcode_enabled = true
+text = "[wave amp=20 freq=6]       GAME JAM :3 uwu"
+
+[node name="CenterRow" type="HBoxContainer" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Buttons" type="VBoxContainer" parent="Menu/CenterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 40
+
+[node name="NewGameButton" parent="Menu/CenterRow/Buttons" instance=ExtResource("6")]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_qyi8o")
+
+[node name="HowToButton" parent="Menu/CenterRow/Buttons" instance=ExtResource("5")]
+layout_mode = 2
+
+[node name="SettingsButton" parent="Menu/CenterRow/Buttons" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="CreditsButton" parent="Menu/CenterRow/Buttons" instance=ExtResource("4")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/CenterRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0

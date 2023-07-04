@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://7ul6g2a0s5l8"]
+
+[ext_resource type="PackedScene" uid="uid://ba21rpgciikux" path="res://Shared/TitleScreen/NewGameButton.tscn" id="1"]
+
+[node name="SettingsButton" instance=ExtResource("1")]
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Label2" parent="." index="0"]
+text = "Settings"
+
+[node name="Label" parent="." index="1"]
+text = "Settings"
