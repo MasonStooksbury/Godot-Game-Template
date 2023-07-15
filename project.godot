@@ -10,10 +10,18 @@ config_version=5
 
 [application]
 
-config/name="GameJam-Template"
+config/name="Godot-Game-Template"
 run/main_scene="res://Shared/TitleScreen/TitleScreen.tscn"
-config/features=PackedStringArray("4.0", "Mobile")
+config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*res://Shared/Global/Global.tscn"
+
+[editor]
+
+naming/scene_name_casing=1
 
 [rendering]
 

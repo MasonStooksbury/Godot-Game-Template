@@ -9,4 +9,3 @@ flat = true
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 theme_override_font_sizes/font_size = 70
-text = "Layble"
