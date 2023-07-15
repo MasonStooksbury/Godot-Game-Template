@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cm12nqobkouag"]
+[gd_scene load_steps=3 format=3 uid="uid://cm12nqobkouag"]
 
 [ext_resource type="Script" path="res://Shared/TitleScreen/ReturnToTitle.gd" id="1_nmt40"]
+[ext_resource type="PackedScene" uid="uid://eqq4xrm6rs41" path="res://Shared/TitleScreen/MenuButton.tscn" id="2_suot5"]
 
 [node name="CreditsScreen" type="Control"]
 layout_mode = 3
@@ -26,83 +27,61 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Derek" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Dev1" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Derek"]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev1"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Derek"]
+[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev1"]
 layout_mode = 2
-text = "Derek Coblentz"
+text = "Firstname Lastname"
 
-[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Derek"]
+[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev1"]
 layout_mode = 2
-text = "All things pixel art and self-deprecation. Came
-up with the name for the game, created the level
-design, character art, and worked on various
-portions of the code. (Loves his wife)
+text = "Description of responsibilities
 
-Game Jam snack of choice: Beef Jerky
+Jam snack of choice: Beef Jerky"
 
-"
-
-[node name="Levi" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Dev2" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Levi"]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev2"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Levi"]
+[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev2"]
 layout_mode = 2
-text = "Levi Koger"
+text = "Firstname Lastname"
 
-[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Levi"]
+[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev2"]
 layout_mode = 2
-text = "All things code and coffee. Responsible for
-most code, character movement, AI, random
-energy paths, boss fight, round progression,
-particle effects, \"How To Play\" screen, and more.
+text = "Description of responsibilities
 
-Game Jam snack of choice: Swiss Rolls"
+Jam snack of choice: Beef Jerky"
 
-[node name="Mason" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Dev3" type="VBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Mason"]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev3"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Mason"]
+[node name="Name" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev3"]
 layout_mode = 2
-text = "Mason Stooksbury"
+text = "Firstname Lastname"
 
-[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Mason"]
+[node name="Description" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/HBoxContainer/Dev3"]
 layout_mode = 2
-text = "All things music and being cold. Did all of the
-music and almost all of the UI/Main menu. Wrote,
-directed, and edited the intro video. Created the Itch.io
-page and an album on SoundCloud.
+text = "Description of responsibilities
 
-Game Jam snack of choice: Cheez-its and Milo's tea"
+Jam snack of choice: Beef Jerky"
 
 [node name="Footer" type="HBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/Footer"]
-layout_mode = 2
-
-[node name="Dan" type="HBoxContainer" parent="CenterContainer/MarginContainer/VBoxContainer/Footer/HBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CenterContainer/MarginContainer/VBoxContainer/Footer/HBoxContainer/Dan"]
-layout_mode = 2
-text = "Voiceover provided by Dan Johnson:
-https://www.fiverr.com/danjohnsonvoice"
-
-[node name="Button" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer/Footer/HBoxContainer"]
+[node name="BackButton" parent="CenterContainer/MarginContainer/VBoxContainer/Footer" instance=ExtResource("2_suot5")]
 layout_mode = 2
 text = "Back"
-flat = true
+flat = false
+script = ExtResource("1_nmt40")
 
-[connection signal="mouse_entered" from="CenterContainer/MarginContainer/VBoxContainer/Footer/HBoxContainer/Button" to="." method="_on_BackLabel_mouse_entered"]
-[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/Footer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" to="CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" method="_on_pressed"]

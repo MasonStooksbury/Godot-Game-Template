@@ -5,5 +5,4 @@ extends Control
 
 
 func _on_pressed():
-	#get_tree().change_scene_to_packed(Global.TITLESCREEN_SCENE)
-	pass
+	get_tree().change_scene_to_packed(Global.TITLESCREEN_SCENE)
