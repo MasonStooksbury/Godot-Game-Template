@@ -4,3 +4,5 @@
 
 [node name="Global" type="Node"]
 script = ExtResource("1_k6oqq")
+
+[node name="SoundManager" type="Node" parent="."]
