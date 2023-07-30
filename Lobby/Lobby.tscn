@@ -115,8 +115,58 @@ offset_right = 938.0
 offset_bottom = 33.0
 text = "Username:"
 
+[node name="LobbyListPopupPanel" type="PopupPanel" parent="."]
+size = Vector2i(600, 400)
+
+[node name="Panel" type="Panel" parent="LobbyListPopupPanel"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 596.0
+offset_bottom = 396.0
+
+[node name="Label" type="Label" parent="LobbyListPopupPanel/Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 89.0
+offset_bottom = 36.0
+text = "Lobby List"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyListPopupPanel/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 380.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyListPopupPanel/Panel/ScrollContainer"]
+layout_mode = 2
+
+[node name="CloseLobbyListButton" type="Button" parent="LobbyListPopupPanel/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -142.0
+offset_top = -41.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Close Lobby List"
+
 [connection signal="pressed" from="CreateLobbyButton" to="." method="_on_create_lobby_button_pressed"]
 [connection signal="pressed" from="JoinLobbyButton" to="." method="_on_join_lobby_button_pressed"]
 [connection signal="pressed" from="LeaveLobbyButton" to="." method="_on_leave_lobby_button_pressed"]
 [connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="pressed" from="SendMessageButton" to="." method="_on_send_message_button_pressed"]
+[connection signal="pressed" from="LobbyListPopupPanel/Panel/CloseLobbyListButton" to="." method="_on_close_lobby_list_button_pressed"]
