@@ -1,4 +1,14 @@
 # Godot-Game-Template
+The purpose of this project is to have a template with a ton of boilerplate code that most games will use. Whether that's common shaders, UI elements, movement code, etc. This will have all kinds of code for any project to get off the ground and running. Since it includes 2D and 3D, as well as multiple genres, this repository will hopefully make it easy to clone and simply delete the code you won't need for your game. Making it perfect for new projects, prototyping, and Game Jams.
+
+
+## Notes
+ - The project is setup to work with LFS and I have included the necessary `.gitattributes` file for you. It includes several common things that may change often that you would want in LFS, but you can always add more.
+
+
+
+
+
 
 In order to make things as consistent as possible we need similar settings. Most of the critical ones are changed in the `project.godot` file, but some can be configured in your editor and affect everything you work on (I think). Most of these settings are personal preference, but I'd like to think I have good reason to use them. All you need to do first is navigate to the `Editor > Editor Settings` menu to get started.
 
