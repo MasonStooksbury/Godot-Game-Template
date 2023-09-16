@@ -8,11 +8,11 @@ const TITLESCREEN_SCENE = preload('res://Shared/TitleScreen/TitleScreen.tscn')
 # SOUNDS
 var sound_node = load("res://Shared/Global/Sound.tscn")
 
-var hover_01: AudioStream = load("res://Assets/Sounds/UI/hover-01.wav")
-var select_click_01: AudioStream = load("res://Assets/Sounds/UI/select-click-01.wav")
+#var hover_01: AudioStream = load("res://Assets/Sounds/UI/hover-01.wav")
+#var select_click_01: AudioStream = load("res://Assets/Sounds/UI/select-click-01.wav")
 
 
-var hover_sounds = [hover_01]
+#var hover_sounds = [hover_01]
 
 var default_sfx_volume = 0.0
 
@@ -29,10 +29,10 @@ func play(sound):
 	var volume = default_sfx_volume
 	match sound:
 		'hover':
-			audio = hover_sounds[randi() % hover_sounds.size()]
+			#audio = hover_sounds[randi() % hover_sounds.size()]
 			volume = -10
 		'select-button':
-			audio = select_click_01
+			#audio = select_click_01
 			volume = -20
 	var sound_obj = sound_node.instantiate()
 	$SoundManager.add_child(sound_obj)
