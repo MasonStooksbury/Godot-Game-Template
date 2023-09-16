@@ -11,7 +11,7 @@ var sound_node = load("res://Shared/Global/Sound.tscn")
 var hover_01: AudioStream = load("res://Assets/Sounds/UI/hover-01.wav")
 var hover_02: AudioStream = load("res://Assets/Sounds/UI/hover-02.wav")
 var hover_03: AudioStream = load("res://Assets/Sounds/UI/hover-03.wav")
-var select_click_01: AudioStream = preload("res://Assets/Sounds/UI/select-click-01.wav")
+var select_click_01: AudioStream = load("res://Assets/Sounds/UI/select-click-01.wav")
 
 
 var hover_sounds = [hover_01, hover_02, hover_03]

@@ -5,4 +5,5 @@ extends Control
 
 
 func _on_pressed():
+	Global.play('select-button')
 	get_tree().change_scene_to_packed(Global.TITLESCREEN_SCENE)
