@@ -1,4 +1,4 @@
-extends 'res://RegularPlayer.gd'
+extends 'res://Shared/Steam/RegularPlayer.gd'
 
 
 # Game management

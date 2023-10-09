@@ -1,5 +1,7 @@
 extends Node
 
+@onready var SteamManager = $SteamManager
+
 # SCENES
 const TITLESCREEN_SCENE = preload('res://Shared/TitleScreen/TitleScreen.tscn')
 

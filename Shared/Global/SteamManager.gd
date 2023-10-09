@@ -20,6 +20,17 @@ var IS_HOST = false
 var PLAYERHOST_STEAM_ID
 
 
+# SCENES
+#const DUMMY_PLAYER_SCENE = preload('res://DummyPlayer.tscn')
+
+# SCRIPTS
+var REGULAR_PLAYER_SCRIPT = load('res://Shared/Steam/RegularPlayer.gd')
+var PLAYERHOST_SCRIPT = load('res://Shared/Steam/PlayerHost.gd')
+
+# CLASS SCRIPTS
+var PLAYER_CLASS = load('res://Shared/Steam/Player.gd')
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 		# Seed the randomizer
