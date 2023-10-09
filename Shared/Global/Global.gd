@@ -42,3 +42,22 @@ func play(sound):
 func clear_all_audio():
 	for child in $SoundManager.get_children():
 		child.queue_free()
+
+
+
+
+
+func rotateClockwise(new_vector, d):
+	var cosine = cos(deg_to_rad(d))
+	var sine = sin(deg_to_rad(d))
+	var almost_x = (new_vector.x * cosine) - (new_vector.y * sine)
+	var almost_y = (new_vector.y * cosine) + (new_vector.x * sine)
+	return Vector2(almost_x, almost_y)
+
+
+func getCenterPivotOffset(body):
+	return Vector2(body.size.x/2, body.size.y/2)
+
+
+func getTopRightPivotOffset(body):
+	return Vector2(body.size.x, 0)
