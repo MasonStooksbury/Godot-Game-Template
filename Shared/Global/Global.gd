@@ -1,9 +1,10 @@
 extends Node
 
 @onready var SteamManager = $SteamManager
+@onready var SoundManager = $SoundManager
 
 # SCENES
-const TITLESCREEN_SCENE = preload('res://Shared/TitleScreen/TitleScreen.tscn')
+const TITLE_SCREEN_SCENE = preload('res://Shared/TitleScreen/TitleScreen.tscn')
 
 
 

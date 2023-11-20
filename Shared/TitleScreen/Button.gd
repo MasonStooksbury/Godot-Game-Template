@@ -3,8 +3,8 @@ extends Button
 @export var next_scene: PackedScene
 
 func _on_pressed():
-	Global.play('select-button')
+	Global.SoundManager.playSound('select-button')
 	get_tree().change_scene_to_packed(next_scene)
 
 func _on_mouse_entered():
-	Global.play('hover')
+	Global.SoundManager.playSound('hover')

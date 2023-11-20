@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhduwrkqr70qp"]
+[gd_scene load_steps=4 format=3 uid="uid://bhduwrkqr70qp"]
 
 [ext_resource type="Script" path="res://Shared/Global/Global.gd" id="1_k6oqq"]
 [ext_resource type="Script" path="res://Shared/Global/SteamManager.gd" id="2_ergqg"]
+[ext_resource type="Script" path="res://Shared/Global/SoundManager.gd" id="2_kp8ah"]
 
 [node name="Global" type="Node"]
 script = ExtResource("1_k6oqq")
 
 [node name="SoundManager" type="Node" parent="."]
+script = ExtResource("2_kp8ah")
 
 [node name="SteamManager" type="Node" parent="."]
 script = ExtResource("2_ergqg")
