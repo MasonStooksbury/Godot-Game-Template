@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Godot-Game-Template"
-run/main_scene="res://Shared/TitleScreen/TitleScreen.tscn"
-config/features=PackedStringArray("4.1", "Mobile")
+run/main_scene="res://Shared/MainMenu/MainMenu.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]

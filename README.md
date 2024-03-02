@@ -22,6 +22,7 @@ In order to make things as consistent as possible we need similar settings. Most
 `Text Editor > Behavior > Files`
  - Trim Trailing Whitespace on Save: `ON`
    - This removes the random tabs and spaces at the end of lines that often shows up
+
 `Text Editor > Completion`
  - Use Single Quotes: `ON`
 

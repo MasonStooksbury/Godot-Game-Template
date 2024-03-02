@@ -83,7 +83,6 @@ func saveConfigData() -> void:
 	settings_file.set_value('Settings', 'music_volume', music_volume)
 	settings_file.set_value('Settings', 'effects_volume', effects_volume)
 	settings_file.set_value('Settings', 'ui_volume', ui_volume)
-
 	settings_file.save('user://%s' % SETTINGS_CONFIG_FILENAME)
 
 

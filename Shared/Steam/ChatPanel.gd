@@ -6,9 +6,9 @@ signal send_message_button_pressed
 
 
 func _on_send_message_button_pressed() -> void:
-	#emit_signal('send_message_button_pressed')
-	pass
+	emit_signal('send_message_button_pressed')
 
 
 func setLabelText(new_text: String) -> void:
+#	chat_label_text.text = new_text
 	chat_label_text.set_text(new_text)

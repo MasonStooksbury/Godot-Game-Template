@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://p38imj5mya4c"]
+[gd_scene load_steps=2 format=3 uid="uid://cplb22liq6u7f"]
 
-[ext_resource type="Script" path="res://Shared/Steam/ChatPanel.gd" id="1_wsveo"]
+[ext_resource type="Script" path="res://Shared/Steam/ChatPanel.gd" id="1_r3nvw"]
 
 [node name="ChatPanel" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 500.0
 offset_bottom = 500.0
-script = ExtResource("1_wsveo")
+script = ExtResource("1_r3nvw")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

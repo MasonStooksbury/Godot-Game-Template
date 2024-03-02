@@ -1,10 +1,33 @@
 extends Node
 
-@onready var SteamManager = $SteamManager
+# MANAGERS
 @onready var SoundManager = $SoundManager
+@onready var AnimationManager = $AnimationManager
+@onready var SignalManager = $SignalManager
+@onready var SteamManager = $SteamManager
+
+
+# MAIN
+var SCREEN_DIMENSIONS
+var SCREEN_CENTER
+
+# STEAM
+var OWNED: bool = false
+var ONLINE: bool = false
+var STEAM_ID: String = ''
+var STEAM_NAME: String = ''
+
+# LOBBY
+var DATA
+var LOBBY_ID: int = 0
+var LOBBY_MEMBERS: Array = []
+var LOBBY_INVITE_ARG: bool = false
+var LOBBY_MAX_MEMBERS: int = 10
+var IS_HOST: bool = false
+var PLAYERHOST_STEAM_ID: String
 
 # SCENES
-const TITLE_SCREEN_SCENE = preload('res://Shared/TitleScreen/TitleScreen.tscn')
+#const TITLE_SCREEN_SCENE = preload('res://Shared/TitleScreen/MainMenu.tscn')
 
 
 
@@ -20,9 +43,37 @@ var sound_node = load("res://Shared/Global/Sound.tscn")
 var default_sfx_volume = 0.0
 
 
-func _ready():
+func _ready() -> void:
 	# Seed the randomizer
 	randomize()
+
+	SCREEN_DIMENSIONS = get_viewport().get_visible_rect().size
+	SCREEN_CENTER = Vector2(SCREEN_DIMENSIONS.x/2, SCREEN_DIMENSIONS.y/2)
+
+	var INIT = Steam.steamInit()
+	if INIT['status'] != 1:
+		print('Failed to initialize Steam. ' + str(INIT['verbal']) + " Shutting down...")
+		get_tree().quit()
+
+	ONLINE = Steam.loggedOn()
+	STEAM_ID = str(Steam.getSteamID())
+	STEAM_NAME = str(Steam.getPersonaName())
+	OWNED = Steam.isSubscribed()
+
+	if not OWNED:
+		print('User does not own this game')
+		get_tree().quit()
+
+	get_tree().get_root().connect('size_changed', handleScreenResize)
+
+
+func _process(_delta) -> void:
+	Steam.run_callbacks()
+
+func handleScreenResize() -> void:
+	SCREEN_DIMENSIONS = get_viewport().get_visible_rect().size
+	SCREEN_CENTER = Vector2(SCREEN_DIMENSIONS.x/2, SCREEN_DIMENSIONS.y/2)
+
 
 func change_sfx_volume(new_volume):
 	default_sfx_volume = new_volume
