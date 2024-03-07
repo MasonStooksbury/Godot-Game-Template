@@ -10,6 +10,8 @@ extends Control
 @onready var invite_friends_button = $InviteFriendsButton
 @onready var lobby_member_number_label = $InviteFriendsButton/CurrentLobbyMemberNumberLabel
 
+var external_invite: bool = false
+
 var players
 
 #var players = [
@@ -293,7 +295,17 @@ func kickButtonPressed(player_steam_id) -> void:
 func _on_Lobby_Created(connect_id, lobby_id) -> void:
 	if connect_id == 1:
 		print('lobby created?')
-		Global.SteamManager._on_Lobby_Created(connect_id, lobby_id)
+		Global.LOBBY_ID = lobby_id
+		Global.IS_HOST = true
+		Global.PLAYERHOST_STEAM_ID = str(Steam.getSteamID())
+
+		# Set Lobby name
+		Steam.setLobbyData(lobby_id, "name", "%s's Lobby" % Global.STEAM_NAME)
+		# Set the ID for the PlayerHost
+		Steam.setLobbyData(lobby_id, 'playerhost_steam_id', Global.PLAYERHOST_STEAM_ID)
+
+		# Allow P2P connections to fallback to being relayed through Steam if needed
+		Steam.allowP2PPacketRelay(true)
 		chat_panel.setLabelText(Steam.getLobbyData(lobby_id, "name"))
 
 		# Allow P2P connections to fallback to being relayed through Steam if needed
@@ -301,8 +313,44 @@ func _on_Lobby_Created(connect_id, lobby_id) -> void:
 		displayMessage('[STEAM] Allowing Steam to be relay backup: %s' % str(is_relay))
 
 
+func _on_Lobby_Join_Requested(lobby_id, friend_id) -> void:
+	external_invite = true
+	# Get lobby owners name
+	var owner_name = Steam.getFriendPersonaName(friend_id)
+#	displayMessage("Joining %s lobby..." % str(owner_name))
+
+	# Join lobby
+	joinLobby(lobby_id)
+
+
+func joinLobby(lobby_id) -> void:
+	if Steam.getNumLobbyMembers(lobby_id) >= Global.LOBBY_MAX_MEMBERS:
+		return
+#	displayMessage("Joining %s lobby..." % Steam.getLobbyData(lobby_id, "name"))
+
+	# Clear previous lobby members list
+	Global.LOBBY_MEMBERS.clear()
+
+	# Steam join request
+	Steam.joinLobby(lobby_id)
+
+
 func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response) -> void:
-	print('lobby joined main')
+	# Set our lobby id to match what lobby we're in
+	Global.LOBBY_ID = lobby_id
+
+	# This prevents a fun bug where if someone creates a game and then joins another game, there are now 2 playerhosts
+	var playerhost_steam_id = Steam.getLobbyData(lobby_id, 'playerhost_steam_id')
+	if playerhost_steam_id == null or playerhost_steam_id != Global.PLAYERHOST_STEAM_ID:
+		Global.IS_HOST = false
+		Global.PLAYERHOST_STEAM_ID = playerhost_steam_id
+
+	if external_invite:
+		get_tree().change_scene_to_packed(Global.MULTIPLAYER_LOBBY_SCENE)
+		# TODO: Not sure how low we can make this, but 1 second definitely works
+		await get_tree().create_timer(0.5).timeout
+
+
 	start_game_button.set_visible(Global.IS_HOST)
 	# Playerhost will be made ready automatically later so we only need to show this to the other players
 	ready_button.set_visible(not Global.IS_HOST)
