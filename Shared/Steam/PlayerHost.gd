@@ -37,7 +37,7 @@ func _init():
 	play_log_rich_text_label = $PlayLogPanel/RichTextLabel
 
 
-	players = Global.LOBBY_MEMBERS
+	players = Global.SteamManager.LOBBY_MEMBERS
 	num_players = players.size()
 
 	# Get the viewport dimensions and set the hand midpoint to its final position
@@ -74,7 +74,7 @@ func _init():
 
 
 func _process(_delta):
-	if Global.LOBBY_ID > 0:
+	if Global.SteamManager.LOBBY_ID > 0:
 		playerHostReadP2PPacket()
 
 
@@ -90,7 +90,7 @@ func initializeGame():
 	# Create player hands and send them
 	for player in players:
 		# Assign PlayerHost hand
-		if player.steam_id == Global.PLAYERHOST_STEAM_ID:
+		if player.steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID:
 			for i in range(hand_size):
 				var card = Global.dataToCard(drawFromDrawPile())
 				addCardToPlayerHostHand(card)
@@ -117,7 +117,7 @@ func initializeGame():
 	# Tell everyone whose turn it is (effectively starting the game)
 	# TODO: Do we want to keep this starting player index stuff?
 	toEveryone('receiveCurrentPlayerTurn', players[0].steam_id)
-	updateTurn(players[0].steam_id == Global.PLAYERHOST_STEAM_ID)
+	updateTurn(players[0].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID)
 
 	# TODO: DELETE THIS
 	modifyGame()
@@ -125,7 +125,7 @@ func initializeGame():
 
 
 func modifyGame():
-	players[getPlayerIndexBySteamID(Global.STEAM_ID)].hand.append(Global.dataToCard('ZW'))
+	players[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].hand.append(Global.dataToCard('ZW'))
 	addCardToHandUI(Global.dataToCard('ZW'))
 
 
@@ -160,7 +160,7 @@ func handleFirstCard():
 			toEveryone('receiveCurrentPlayerTurn', players[current_player_index].steam_id)
 
 			# Update my play state based on whether or not it's my turn
-			updateTurn(players[current_player_index].steam_id == Global.PLAYERHOST_STEAM_ID)
+			updateTurn(players[current_player_index].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID)
 		# If W, current player chooses color, then takes turn
 		'W':
 			disableHand()
@@ -223,7 +223,7 @@ func playerHostReadP2PPacket() -> void:
 					toEveryone('receiveCurrentPlayerTurn', players[current_player_index].steam_id)
 					displayMessage(update_message)
 					updateAllPlayerCardCounts(player_steam_id)
-					updateTurn(players[current_player_index].steam_id == Global.PLAYERHOST_STEAM_ID)
+					updateTurn(players[current_player_index].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID)
 
 				elif action == 'drawCard':
 					var drawn_card = drawFromDrawPile()
@@ -298,14 +298,14 @@ func handleCardFromPlayer(player_steam_id, special_card, hand_card, skip_distanc
 		nextPlayer(skip_distance)
 
 	if cards_to_draw > 0 and players[current_player_index].is_final_turn:
-		assignCardsToDraw(null if players[current_player_index].steam_id == Global.PLAYERHOST_STEAM_ID else players[current_player_index].steam_id)
+		assignCardsToDraw(null if players[current_player_index].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID else players[current_player_index].steam_id)
 		players[current_player_index].is_final_turn = false
 
 	# Tell everyone whose turn it is
 	toEveryone('receiveCurrentPlayerTurn', players[current_player_index].steam_id)
 
 	# Update my play state based on whether or not it's my turn
-	updateTurn(players[current_player_index].steam_id == Global.PLAYERHOST_STEAM_ID)
+	updateTurn(players[current_player_index].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID)
 
 
 
@@ -329,7 +329,7 @@ func handleExtraDrawCards(special_card, hand_card, player_steam_id):
 
 
 func assignCardsToDraw(player_steam_id):
-	if player_steam_id != Global.PLAYERHOST_STEAM_ID:
+	if player_steam_id != Global.SteamManager.PLAYERHOST_STEAM_ID:
 		var extra_cards = []
 		for i in range(cards_to_draw):
 			var data = drawFromDrawPile()
@@ -431,13 +431,13 @@ func drawCard():
 		addCardToPlayerHostHand(card)
 		super.addCardToHandUI(card)
 		if cards_to_draw > 0:
-			assignCardsToDraw(Global.PLAYERHOST_STEAM_ID)
+			assignCardsToDraw(Global.SteamManager.PLAYERHOST_STEAM_ID)
 		playerHostEndTurn()
 		test_string += 'doople'
 	super.debug_print('This section should only ever say flump or doople. But never both: [%s]' % test_string)
-	updateAllPlayerCardCounts(Global.PLAYERHOST_STEAM_ID)
+	updateAllPlayerCardCounts(Global.SteamManager.PLAYERHOST_STEAM_ID)
 
-	var message_string = '%s drew a card' % Global.STEAM_NAME
+	var message_string = '%s drew a card' % Global.SteamManager.STEAM_NAME
 	toEveryone('receiveLastAction', message_string)
 	super.displayMessage(message_string)
 
@@ -497,7 +497,7 @@ func playCard(data):
 	if data[1] == 'R' or (card_object.special_card != null and card_object.special_card.card_type == 'R'):
 		changeDirection()
 	# TODO: handleExtraDrawCard logic
-	handleExtraDrawCards(card_object.special_card, data, Global.PLAYERHOST_STEAM_ID)
+	handleExtraDrawCards(card_object.special_card, data, Global.SteamManager.PLAYERHOST_STEAM_ID)
 
 
 	# If played an Omnidirectional NO-U, set the current_player_index to that player
@@ -515,16 +515,16 @@ func playCard(data):
 	toEveryone('receiveDiscardCardAndColor', {'card': Global.cardToData(top_of_discard_pile), 'color': card_object.special_card.new_color if card_object.special_card != null else data[0]})
 
 
-	handleAndSendLastAction(Global.PLAYERHOST_STEAM_ID, card_object.special_card, data)
+	handleAndSendLastAction(Global.SteamManager.PLAYERHOST_STEAM_ID, card_object.special_card, data)
 
 	# TODO: Do I need to tell everyone that a player was skipped?
-	updateAllPlayerCardCounts(Global.PLAYERHOST_STEAM_ID)
+	updateAllPlayerCardCounts(Global.SteamManager.PLAYERHOST_STEAM_ID)
 	toEveryone('receiveCurrentPlayerTurn', players[current_player_index].steam_id)
-	updateTurn(true if players[current_player_index].steam_id == Global.PLAYERHOST_STEAM_ID else false)
+	updateTurn(true if players[current_player_index].steam_id == Global.SteamManager.PLAYERHOST_STEAM_ID else false)
 
-	if players[getPlayerIndexBySteamID(Global.PLAYERHOST_STEAM_ID)].hand.size() == 0:
-		players[getPlayerIndexBySteamID(Global.PLAYERHOST_STEAM_ID)].is_final_turn = true
-		toEveryone('receiveFinalTurnWarning', Global.STEAM_NAME)
+	if players[getPlayerIndexBySteamID(Global.SteamManager.PLAYERHOST_STEAM_ID)].hand.size() == 0:
+		players[getPlayerIndexBySteamID(Global.SteamManager.PLAYERHOST_STEAM_ID)].is_final_turn = true
+		toEveryone('receiveFinalTurnWarning', Global.SteamManager.STEAM_NAME)
 		displayMessage('This is your final turn!')
 
 
@@ -555,12 +555,12 @@ func removeCardFromPlayerHand(player_steam_id, data):
 
 # Different from addCardToPlayerHand() in that it adds a card instead of data
 func addCardToPlayerHostHand(card):
-	players[getPlayerIndexBySteamID(Global.PLAYERHOST_STEAM_ID)].hand.append(card)
+	players[getPlayerIndexBySteamID(Global.SteamManager.PLAYERHOST_STEAM_ID)].hand.append(card)
 
 
 func removeCardFromPlayerHostHand(data):
 	var count = 0
-	var playerhost = players[getPlayerIndexBySteamID(Global.PLAYERHOST_STEAM_ID)]
+	var playerhost = players[getPlayerIndexBySteamID(Global.SteamManager.PLAYERHOST_STEAM_ID)]
 	for card in playerhost.hand:
 		if card.data == data:
 			playerhost.hand.remove_at(count)

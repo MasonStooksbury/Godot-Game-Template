@@ -36,9 +36,6 @@ func _ready():
 		# Seed the randomizer
 	randomize()
 
-	SCREEN_DIMENSIONS = get_viewport().get_visible_rect().size
-	SCREEN_CENTER = Vector2(SCREEN_DIMENSIONS.x/2, SCREEN_DIMENSIONS.y/2)
-
 	var INIT = Steam.steamInit()
 	if INIT['status'] != 1:
 		print('Failed to initialize Steam. ' + str(INIT['verbal']) + " Shutting down...")

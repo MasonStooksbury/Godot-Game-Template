@@ -69,7 +69,7 @@ func _init():
 	play_log_panel = $PlayLogPanel
 	play_log_rich_text_label = $PlayLogPanel/RichTextLabel
 
-	debug_print(Global.LOBBY_MEMBERS)
+	debug_print(Global.SteamManager.LOBBY_MEMBERS)
 
 	var viewport_dimensions = get_viewport().get_visible_rect().size
 	midpoint.global_position = Vector2(viewport_dimensions.x/2, 1200)
@@ -86,11 +86,11 @@ func _init():
 func _ready():
 	setupConnections()
 	# TODO: Delete this?
-	#updatePlayerCardCount(Global.STEAM_ID, 10)
+	#updatePlayerCardCount(Global.SteamManager.STEAM_ID, 10)
 
 
 func _process(_delta):
-	if Global.LOBBY_ID > 0:
+	if Global.SteamManager.LOBBY_ID > 0:
 		playerReadP2PPacket()
 
 
@@ -484,7 +484,7 @@ func togglePlayLogPanel():
 #####################################
 
 func toPlayerHost(type, data):
-	sendP2PPacket(int(Global.PLAYERHOST_STEAM_ID), {'type': type, 'data': data})
+	sendP2PPacket(int(Global.SteamManager.PLAYERHOST_STEAM_ID), {'type': type, 'data': data})
 
 
 
@@ -546,7 +546,7 @@ func playerReadP2PPacket() -> void:
 					endTurn()
 					test_string += 'doople'
 				debug_print('This section should only ever say flump or doople. But never both: [%s]' % test_string)
-			'receiveCurrentPlayerTurn': updateTurn(readable['data'] == Global.STEAM_ID)
+			'receiveCurrentPlayerTurn': updateTurn(readable['data'] == Global.SteamManager.STEAM_ID)
 			'receiveDiscardCardAndColor':
 				setDiscardPile(readable['data']['card'])
 				current_color = readable['data']['color']
@@ -581,10 +581,10 @@ func sendP2PPacket(target: int, packet_data_dictionary: Dictionary) -> void:
 	var send_response: bool
 	if target == 0:
 		# If there is more than one user, send packets
-		if Global.LOBBY_MEMBERS.size() > 1:
+		if Global.SteamManager.LOBBY_MEMBERS.size() > 1:
 			# Loop through all members that aren't you
-			for member in Global.LOBBY_MEMBERS:
-				if member['steam_id'] != Global.STEAM_ID:
+			for member in Global.SteamManager.LOBBY_MEMBERS:
+				if member['steam_id'] != Global.SteamManager.STEAM_ID:
 					send_response = Steam.sendP2PPacket(int(member['steam_id']), packet_data, send_type, channel)
 					# TODO: Is this retry logic a bad idea?
 					if not send_response:

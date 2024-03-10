@@ -50,20 +50,6 @@ func _ready() -> void:
 	SCREEN_DIMENSIONS = get_viewport().get_visible_rect().size
 	SCREEN_CENTER = Vector2(SCREEN_DIMENSIONS.x/2, SCREEN_DIMENSIONS.y/2)
 
-	var INIT = Steam.steamInit()
-	if INIT['status'] != 1:
-		print('Failed to initialize Steam. ' + str(INIT['verbal']) + " Shutting down...")
-		get_tree().quit()
-
-	ONLINE = Steam.loggedOn()
-	STEAM_ID = str(Steam.getSteamID())
-	STEAM_NAME = str(Steam.getPersonaName())
-	OWNED = Steam.isSubscribed()
-
-	if not OWNED:
-		print('User does not own this game')
-		get_tree().quit()
-
 	get_tree().get_root().connect('size_changed', handleScreenResize)
 
 

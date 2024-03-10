@@ -27,7 +27,7 @@ func _ready():
 
 
 func _process(_delta):
-	if Global.LOBBY_ID > 0:
+	if Global.SteamManager.LOBBY_ID > 0:
 		readP2PPacket()
 
 
@@ -42,7 +42,7 @@ func displayMessage(message):
 
 
 func createLobby():
-	if Global.LOBBY_ID == 0:
+	if Global.SteamManager.LOBBY_ID == 0:
 		Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, Global.LOBBY_MAX_MEMBERS)
 
 
@@ -50,23 +50,23 @@ func joinLobby(lobby_id):
 	displayMessage("Joining %s lobby..." % Steam.getLobbyData(lobby_id, "name"))
 
 	# Clear previous lobby members list
-	Global.LOBBY_MEMBERS.clear()
+	Global.SteamManager.LOBBY_MEMBERS.clear()
 
 	# Steam join request
 	Steam.joinLobby(lobby_id)
 
 
 func getLobbyMembers():
-	Global.LOBBY_MEMBERS.clear()
+	Global.SteamManager.LOBBY_MEMBERS.clear()
 
 	# Get number of members in lobby
-	var member_count = Steam.getNumLobbyMembers(Global.LOBBY_ID)
+	var member_count = Steam.getNumLobbyMembers(Global.SteamManager.LOBBY_ID)
 	# Update player list count
 	players_panel_label.set_text("Players (%s)" % str(member_count))
 
 	# Get member data
 	for member in range(0, member_count):
-		var member_steam_id = Steam.getLobbyMemberByIndex(Global.LOBBY_ID, member)
+		var member_steam_id = Steam.getLobbyMemberByIndex(Global.SteamManager.LOBBY_ID, member)
 
 		var member_steam_name = Steam.getFriendPersonaName(member_steam_id)
 
@@ -81,35 +81,35 @@ func getLobbyMembers():
 
 
 func addPlayerList(player_object):
-	Global.LOBBY_MEMBERS.append(Global.PLAYER_CLASS.new(player_object))
+	Global.SteamManager.LOBBY_MEMBERS.append(Global.PLAYER_CLASS.new(player_object))
 
-	if Global.IS_HOST:
-		Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.STEAM_ID)].is_ready = true
+	if Global.SteamManager.IS_HOST:
+		Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = true
 
 	players_panel_rich_text_label.clear()
 
-	for member in Global.LOBBY_MEMBERS:
+	for member in Global.SteamManager.LOBBY_MEMBERS:
 		players_panel_rich_text_label.add_text(str(member['steam_name']) + '\n')
 
 
 func leaveLobby():
-	if Global.LOBBY_ID != 0:
+	if Global.SteamManager.LOBBY_ID != 0:
 		displayMessage('Leaving lobby...')
 
-		Steam.leaveLobby(Global.LOBBY_ID)
+		Steam.leaveLobby(Global.SteamManager.LOBBY_ID)
 
-		Global.LOBBY_ID = 0
+		Global.SteamManager.LOBBY_ID = 0
 
 		chat_panel_label.text = 'Lobby Name'
 		players_panel_label.text = 'Players (0)'
 		players_panel_rich_text_label.clear()
 		clearChatPanel()
 
-		for members in Global.LOBBY_MEMBERS:
-			if members['steam_id'] != Global.STEAM_ID:
+		for members in Global.SteamManager.LOBBY_MEMBERS:
+			if members['steam_id'] != Global.SteamManager.STEAM_ID:
 				Steam.closeP2PSessionWithUser(int(members['steam_id']))
 
-		Global.LOBBY_MEMBERS.clear()
+		Global.SteamManager.LOBBY_MEMBERS.clear()
 		create_lobby_button.set_visible(true)
 
 
@@ -127,7 +127,7 @@ func sendChatMessage():
 	send_message_line_edit.clear()
 
 	# Give the message to Steam
-	var sent = Steam.sendLobbyChatMsg(Global.LOBBY_ID, message)
+	var sent = Steam.sendLobbyChatMsg(Global.SteamManager.LOBBY_ID, message)
 
 	if not sent:
 		displayMessage('ERROR: Chat message failed to send')
@@ -142,33 +142,33 @@ func startGame():
 
 
 func readyUp():
-	if Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.STEAM_ID)].is_ready:
+	if Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready:
 		unready()
 	else:
 		ready_button.text = 'Locked In'
-		Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.STEAM_ID)].is_ready = true
+		Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = true
 		toPlayerHost('ready', '')
 
 
 func unready():
 	ready_button.text = 'Ready Up'
-	Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.STEAM_ID)].is_ready = false
+	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = false
 	toPlayerHost('unready', '')
 
 
 func handleReadyUp(steam_id):
-	Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = true
+	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = true
 	checkLobbyReadyStatus()
 
 
 func handleUnready(steam_id):
-	Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = false
+	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = false
 	checkLobbyReadyStatus()
 
 
 func checkLobbyReadyStatus():
 	var ready_values_array = []
-	for member in Global.LOBBY_MEMBERS:
+	for member in Global.SteamManager.LOBBY_MEMBERS:
 		ready_values_array.append(member.is_ready)
 	print(ready_values_array)
 	print(not (false not in ready_values_array))
@@ -177,7 +177,7 @@ func checkLobbyReadyStatus():
 
 func getPlayerIndexBySteamID(player_steam_id):
 	var count = 0
-	for player in Global.LOBBY_MEMBERS:
+	for player in Global.SteamManager.LOBBY_MEMBERS:
 		if player.steam_id == player_steam_id:
 			return count
 		count += 1
@@ -190,16 +190,16 @@ func getPlayerIndexBySteamID(player_steam_id):
 
 func _on_Lobby_Created(connect_id, lobby_id):
 	if connect_id == 1:
-		Global.LOBBY_ID = lobby_id
-		Global.IS_HOST = true
-		Global.PLAYERHOST_STEAM_ID = str(Steam.getSteamID())
+		Global.SteamManager.LOBBY_ID = lobby_id
+		Global.SteamManager.IS_HOST = true
+		Global.SteamManager.PLAYERHOST_STEAM_ID = str(Steam.getSteamID())
 
 		displayMessage("Created lobby: %s" % create_lobby_line_edit.text)
 
 		# Set Lobby name
 		Steam.setLobbyData(lobby_id, "name", create_lobby_line_edit.text)
 		# Set the ID for the PlayerHost
-		Steam.setLobbyData(lobby_id, 'playerhost_steam_id', Global.PLAYERHOST_STEAM_ID)
+		Steam.setLobbyData(lobby_id, 'playerhost_steam_id', Global.SteamManager.PLAYERHOST_STEAM_ID)
 		chat_panel_label.text = Steam.getLobbyData(lobby_id, "name")
 
 		# Allow P2P connections to fallback to being relayed through Steam if needed
@@ -209,18 +209,18 @@ func _on_Lobby_Created(connect_id, lobby_id):
 
 func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response):
 	# Set our lobby id to match what lobby we're in
-	Global.LOBBY_ID = lobby_id
+	Global.SteamManager.LOBBY_ID = lobby_id
 
 	# This prevents a fun bug where if someone creates a game and then joins another game, there are now 2 playerhosts
 	var playerhost_steam_id = Steam.getLobbyData(lobby_id, 'playerhost_steam_id')
-	if playerhost_steam_id == null or playerhost_steam_id != Global.PLAYERHOST_STEAM_ID:
-		Global.IS_HOST = false
-		Global.PLAYERHOST_STEAM_ID = playerhost_steam_id
+	if playerhost_steam_id == null or playerhost_steam_id != Global.SteamManager.PLAYERHOST_STEAM_ID:
+		Global.SteamManager.IS_HOST = false
+		Global.SteamManager.PLAYERHOST_STEAM_ID = playerhost_steam_id
 
-	start_game_button.set_visible(Global.IS_HOST)
+	start_game_button.set_visible(Global.SteamManager.IS_HOST)
 	create_lobby_button.set_visible(false)
 	# Playerhost will be made ready automatically later so we only need to show this to the other players
-	ready_button.set_visible(not Global.IS_HOST)
+	ready_button.set_visible(not Global.SteamManager.IS_HOST)
 
 	# Set panel lobby name
 	chat_panel_label.text = Steam.getLobbyData(lobby_id, "name")
@@ -229,8 +229,8 @@ func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response):
 	getLobbyMembers()
 
 	# This makes it so that the PlayerHost is automatically ready
-	if Global.IS_HOST:
-		handleReadyUp(Global.STEAM_ID)
+	if Global.SteamManager.IS_HOST:
+		handleReadyUp(Global.SteamManager.STEAM_ID)
 
 	makeP2PHandshake()
 
@@ -288,7 +288,7 @@ func _loaded_avatar(player_steam_id: int, size: int, buffer: PackedByteArray):
 	# Save this texture to the correct player's profile_picture attribute
 	print('balls')
 	print(AVATAR_TEXTURE)
-	Global.LOBBY_MEMBERS[getPlayerIndexBySteamID(str(player_steam_id))].setTexture(AVATAR_TEXTURE)
+	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(str(player_steam_id))].setTexture(AVATAR_TEXTURE)
 
 
 
@@ -302,7 +302,7 @@ func _loaded_avatar(player_steam_id: int, size: int, buffer: PackedByteArray):
 
 func makeP2PHandshake() -> void:
 	displayMessage("[STEAM] Sending P2P handshake to the lobby...\n")
-	toEveryone('handshake', {'from': Global.STEAM_NAME})
+	toEveryone('handshake', {'from': Global.SteamManager.STEAM_NAME})
 
 
 # When receiving a P2P request from another user
@@ -370,7 +370,7 @@ func readP2PPacket() -> void:
 			'startGame': startGame()
 			'ready': handleReadyUp(player_steam_id)
 			'unready': handleUnready(player_steam_id)
-		if Global.IS_HOST:
+		if Global.SteamManager.IS_HOST:
 			match readable['type']:
 				'handshake': checkLobbyReadyStatus()
 
@@ -387,10 +387,10 @@ func sendP2PPacket(target: int, packet_data_dictionary: Dictionary) -> void:
 	var send_response: bool
 	if target == 0:
 		# If there is more than one user, send packets
-		if Global.LOBBY_MEMBERS.size() > 1:
+		if Global.SteamManager.LOBBY_MEMBERS.size() > 1:
 			# Loop through all members that aren't you
-			for member in Global.LOBBY_MEMBERS:
-				if member['steam_id'] != Global.STEAM_ID:
+			for member in Global.SteamManager.LOBBY_MEMBERS:
+				if member['steam_id'] != Global.SteamManager.STEAM_ID:
 					send_response = Steam.sendP2PPacket(int(member['steam_id']), packet_data, send_type, channel)
 	# Else send the packet to a particular user
 	else:
@@ -404,7 +404,7 @@ func toEveryone(type, data):
 	sendP2PPacket(0, {'type': type, 'data': data})
 
 func toPlayerHost(type, data):
-	sendP2PPacket(int(Global.PLAYERHOST_STEAM_ID), {'type': type, 'data': data})
+	sendP2PPacket(int(Global.SteamManager.PLAYERHOST_STEAM_ID), {'type': type, 'data': data})
 
 
 
@@ -425,12 +425,12 @@ func _check_Command_Line():
 	if ARGUMENTS.size() > 0:
 		for argument in ARGUMENTS:
 			# Invite argument passed
-			if Global.LOBBY_INVITE_ARG:
+			if Global.SteamManager.LOBBY_INVITE_ARG:
 				joinLobby(int(argument))
 
 			# Steam connection argument
 			if argument == "+connect_lobby":
-				Global.LOBBY_INVITE_ARG = true
+				Global.SteamManager.LOBBY_INVITE_ARG = true
 
 
 
@@ -454,12 +454,12 @@ func _on_create_lobby_button_pressed():
 
 
 func _on_leave_lobby_button_pressed():
-	if Global.LOBBY_ID != 0:
+	if Global.SteamManager.LOBBY_ID != 0:
 		leaveLobby()
 
 
 func _on_start_game_button_pressed():
-	if Global.IS_HOST:
+	if Global.SteamManager.IS_HOST:
 		toEveryone('startGame', '')
 	startGame()
 
