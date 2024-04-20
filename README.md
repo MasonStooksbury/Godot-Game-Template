@@ -54,3 +54,6 @@ In order to make things as consistent as possible we need similar settings. Most
 
 `Interface > Inspector > Default Color Picker Shape`
  - `HSV Rectangle`
+
+`Run > Window Placement`
+ - Screen: `Next Screen`
