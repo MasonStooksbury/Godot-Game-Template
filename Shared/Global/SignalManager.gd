@@ -1,4 +1,10 @@
 extends Node
 
 # Multiplayer Lobby Signals
-signal kick_button_pressed
+signal kick_button_pressed(player_steam_id: String)
+signal kicked_from_lobby
+signal create_lobby
+signal start_game_button_pressed
+signal send_message_button_pressed
+signal invite_friends_button_pressed
+signal ready_button_pressed
