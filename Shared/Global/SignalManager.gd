@@ -4,8 +4,14 @@ extends Node
 signal kick_button_pressed(player_steam_id: String)
 signal kicked_from_lobby
 signal create_lobby
+signal player_joined_lobby
+signal player_disconnected
 signal start_game_button_pressed
 signal start_game
-signal send_message_button_pressed
-signal invite_friends_button_pressed
 signal ready_button_pressed
+signal handle_ready_up
+signal handle_unready
+signal check_max_lobby_members_reached
+signal reorganize_and_render
+signal display_message
+signal check_lobby_ready_status

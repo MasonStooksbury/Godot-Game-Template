@@ -29,26 +29,27 @@ var players
 
 
 func _setup() -> void:
-	Global.SignalManager.create_lobby.emit()
+	if Global.SteamManager.LOBBY_ID == 0:
+		Global.SignalManager.create_lobby.emit()
 
 
 func _ready() -> void:
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
 	Global.SignalManager.kicked_from_lobby.connect(leaveLobby)
 	Global.SignalManager.start_game.connect(startGame)
+	Global.SignalManager.handle_ready_up.connect(handleReadyUp)
+	Global.SignalManager.handle_unready.connect(handleUnready)
+	Global.SignalManager.player_joined_lobby.connect(playerJoinedLobby)
+	Global.SignalManager.display_message.connect(displayMessage)
+	Global.SignalManager.check_lobby_ready_status.connect(checkLobbyReadyStatus)
 
 
 	# This will only happen if someone isn't already in a populated lobby (i.e. they're by themselves)
-	if Global.SteamManager.LOBBY_ID == 0:
-		createLobby()
+	#if Global.SteamManager.LOBBY_ID == 0:
+	#	createLobby()
 
 	handleScreenResize()
 	get_tree().get_root().connect('size_changed', handleScreenResize)
-
-
-func _process(_delta) -> void:
-	if Global.SteamManager.LOBBY_ID > 0:
-		readP2PPacket()
 
 
 func handleScreenResize() -> void:
@@ -118,6 +119,11 @@ func derenderPlayers() -> void:
 
 
 
+func checkMaxLobbyMembersReached() -> void:
+	if Steam.getNumLobbyMembers(Global.SteamManager.LOBBY_ID) >= Global.LOBBY_MAX_MEMBERS:
+		invite_friends_button.disabled = true
+
+
 #####################################
 ###### USER DEFINED FUNCTIONS #######
 #####################################
@@ -162,27 +168,27 @@ func startGame() -> void:
 
 
 func readyUp() -> void:
-	if Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready:
+	if Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready:
 		unready()
 	else:
 		ready_button.text = 'Unready'
-		Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = true
-		toPlayerHost('ready')
+		Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = true
+		Global.SignalManager.ready_button_pressed.emit(true)
 
 
 func unready() -> void:
 	ready_button.text = 'Ready Up'
-	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = false
-	toPlayerHost('unready')
+	Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(Global.SteamManager.STEAM_ID)].is_ready = false
+	Global.SignalManager.ready_button_pressed.emit(false)
 
 
 func handleReadyUp(steam_id) -> void:
-	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = true
+	Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(steam_id)].is_ready = true
 	checkLobbyReadyStatus()
 
 
 func handleUnready(steam_id) -> void:
-	Global.SteamManager.LOBBY_MEMBERS[getPlayerIndexBySteamID(steam_id)].is_ready = false
+	Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(steam_id)].is_ready = false
 	checkLobbyReadyStatus()
 
 
@@ -192,6 +198,21 @@ func checkLobbyReadyStatus() -> void:
 		ready_values_array.append(member.is_ready)
 
 	start_game_button.disabled = not (false not in ready_values_array)
+
+
+
+func playerJoinedLobby() -> void:
+	start_game_button.set_visible(Global.SteamManager.IS_HOST)
+
+	# Playerhost will be made ready automatically later so we only need to show this to the other players
+	ready_button.set_visible(not Global.SteamManager.IS_HOST)
+
+	# Set panel lobby name
+	chat_panel.setLabelText(Steam.getLobbyData(Global.SteamManager.LOBBY_ID, "name"))
+
+
+func lobbyCreated() -> void:
+	chat_panel.setLabelText(Steam.getLobbyData(Global.SteamManager.LOBBY_ID, "name"))
 
 
 
@@ -227,17 +248,14 @@ func _on_start_game_button_pressed() -> void:
 
 func _on_send_message_button_pressed() -> void:
 	Global.SoundManager.playSound('select')
-	Global.SignalManager.send_message_button_pressed.emit()
 	sendChatMessage()
 
 
 func _on_invite_friends_button_pressed() -> void:
 	Global.SoundManager.playSound('select')
-	Global.SignalManager.invite_friends_button_pressed.emit()
 	inviteFriends()
 
 
 func _on_ready_button_pressed() -> void:
 	Global.SoundManager.playSound('select')
-	Global.SignalManager.ready_button_pressed.emit(true)
 	readyUp()
