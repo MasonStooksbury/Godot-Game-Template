@@ -8,11 +8,11 @@
 [node name="Global" type="Node"]
 script = ExtResource("1_k6oqq")
 
-[node name="SoundManager" type="Node" parent="."]
-script = ExtResource("2_kp8ah")
+[node name="SignalManager" type="Node" parent="."]
+script = ExtResource("4_no50i")
 
 [node name="SteamManager" type="Node" parent="."]
 script = ExtResource("2_ergqg")
 
-[node name="SignalManager" type="Node" parent="."]
-script = ExtResource("4_no50i")
+[node name="SoundManager" type="Node" parent="."]
+script = ExtResource("2_kp8ah")

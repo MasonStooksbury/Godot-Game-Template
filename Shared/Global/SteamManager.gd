@@ -37,8 +37,10 @@ var players
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _setup():
 	connectSteamSignals("lobby_created", "_on_Lobby_Created")
+	connectSteamSignals("lobby_joined", "_on_Lobby_Joined")
+	connectSteamSignals("join_requested", "_on_Lobby_Join_Requested")
 	connectSteamSignals("lobby_chat_update", "_on_Lobby_Chat_Update")
 	connectSteamSignals("lobby_message", "_on_Lobby_Message")
 	connectSteamSignals("lobby_data_update", "_on_Lobby_Data_Update")
@@ -46,7 +48,7 @@ func _ready():
 	connectSteamSignals("p2p_session_connect_fail", "_on_P2P_Session_Connect_Fail")
 	connectSteamSignals("avatar_loaded", "_loaded_avatar")
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
-	Global.SignalManager.create_lobby.connect(createLobby)
+	# Global.SignalManager.create_lobby.connect(createLobby)
 	Global.SignalManager.start_game_button_pressed.connect(startGameButtonPressed)
 	Global.SignalManager.ready_button_pressed.connect(readyButtonPressed)
 	Global.SignalManager.leave_lobby_button_pressed.connect(leaveLobby)
@@ -69,6 +71,9 @@ func _ready():
 	if not OWNED:
 		print('User does not own this game')
 		get_tree().quit()
+
+	if LOBBY_ID == 0:
+		createLobby()
 
 
 
@@ -212,6 +217,8 @@ func _on_Lobby_Created(connect_id, lobby_id) -> void:
 		var is_relay: bool = Steam.allowP2PPacketRelay(true)
 		displayMessage('[STEAM] Allowing Steam to be relay backup: %s' % str(is_relay))
 
+		Global.SignalManager.created_lobby.emit()
+
 
 func _on_Lobby_Join_Requested(lobby_id, friend_id) -> void:
 	external_invite = true
@@ -224,6 +231,7 @@ func _on_Lobby_Join_Requested(lobby_id, friend_id) -> void:
 
 
 func joinLobby(lobby_id) -> void:
+	print('in join lobby')
 	if Steam.getNumLobbyMembers(lobby_id) >= Global.LOBBY_MAX_MEMBERS:
 		return
 	displayMessage("Joining %s lobby..." % Steam.getLobbyData(lobby_id, "name"))
@@ -236,6 +244,7 @@ func joinLobby(lobby_id) -> void:
 
 
 func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response) -> void:
+	print('lobby joined')
 	# Set our lobby id to match what lobby we're in
 	LOBBY_ID = lobby_id
 
@@ -246,6 +255,7 @@ func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response) -> void:
 		PLAYERHOST_STEAM_ID = playerhost_steam_id
 
 	Global.SignalManager.player_joined_lobby.emit()
+	print('joined lobby?')
 
 	# Get lobby members
 	getLobbyMembers()

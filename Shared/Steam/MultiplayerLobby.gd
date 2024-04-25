@@ -28,12 +28,13 @@ var players
 #	]
 
 
-func _setup() -> void:
-	if Global.SteamManager.LOBBY_ID == 0:
-		Global.SignalManager.create_lobby.emit()
+# func _setup() -> void:
+# 	if Global.SteamManager.LOBBY_ID == 0:
+# 		Global.SignalManager.create_lobby.emit()
 
 
 func _ready() -> void:
+	Global.SignalManager.created_lobby.connect(createdLobby)
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
 	Global.SignalManager.kicked_from_lobby.connect(leaveLobby)
 	Global.SignalManager.start_game.connect(startGame)
@@ -136,7 +137,7 @@ func leaveLobby() -> void:
 	if Global.SteamManager.LOBBY_ID != 0:
 		chat_panel.setLabelText('Lobby Name')
 		clearChatPanel()
-	get_parent()._on_back_button_pressed()
+	get_parent().toggle_screen('~', true)
 
 
 func clearChatPanel() -> void:
@@ -202,16 +203,18 @@ func checkLobbyReadyStatus() -> void:
 
 
 func playerJoinedLobby() -> void:
+	print('in here')
 	start_game_button.set_visible(Global.SteamManager.IS_HOST)
 
 	# Playerhost will be made ready automatically later so we only need to show this to the other players
 	ready_button.set_visible(not Global.SteamManager.IS_HOST)
+	print(ready_button.visible)
 
 	# Set panel lobby name
 	chat_panel.setLabelText(Steam.getLobbyData(Global.SteamManager.LOBBY_ID, "name"))
 
 
-func lobbyCreated() -> void:
+func createdLobby() -> void:
 	chat_panel.setLabelText(Steam.getLobbyData(Global.SteamManager.LOBBY_ID, "name"))
 
 
@@ -236,8 +239,7 @@ func _input(event) -> void:
 func _on_leave_lobby_button_pressed() -> void:
 	Global.SoundManager.playSound('select')
 	Global.SignalManager.leave_lobby_button_pressed.emit()
-	if Global.SteamManager.LOBBY_ID != 0:
-		leaveLobby()
+	leaveLobby()
 
 
 func _on_start_game_button_pressed() -> void:
