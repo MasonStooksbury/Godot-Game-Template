@@ -2,7 +2,7 @@ extends Node
 
 
 # Main Menu
-signal open_screen
+signal open_screen(screen_name: String)
 
 
 # Multiplayer Lobby Signals
@@ -10,8 +10,8 @@ signal kick_button_pressed(player_steam_id: String)
 signal kicked_from_lobby
 signal create_lobby # TODO: Do I need this?
 signal created_lobby
-signal player_joined_lobby
-signal player_disconnected
+signal player_joined_lobby(player_steam_id: String)
+signal player_disconnected(player_steam_id: String)
 signal leave_lobby_button_pressed
 signal start_game_button_pressed
 signal start_game
