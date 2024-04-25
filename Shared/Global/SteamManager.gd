@@ -47,7 +47,7 @@ func _ready():
 	connectSteamSignals("avatar_loaded", "_loaded_avatar")
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
 	Global.SignalManager.create_lobby.connect(createLobby)
-	Global.SignalManager.start_game_button_pressed.connect(startGame)
+	Global.SignalManager.start_game_button_pressed.connect(startGameButtonPressed)
 	Global.SignalManager.send_message_button_pressed.connect(sendChatMessage)
 	Global.SignalManager.invite_friends_button_pressed.connect(inviteFriends)
 	Global.SignalManager.ready_button_pressed.connect(readyUp)
@@ -234,11 +234,12 @@ func inviteFriends() -> void:
 	Steam.activateGameOverlayInviteDialog(LOBBY_ID)
 
 
-func startGame() -> void:
+func startGameButtonPressed() -> void:
 	if IS_HOST:
 		toEveryone('startGame')
-	get_tree().change_scene_to_packed(Global.GAME_SCENE)
-	Global.SoundManager.playSound('start_game')
+
+func startGame() -> void:
+	Global.SignalManager.start_game.emit()
 
 
 func getPlayerIndexBySteamID(player_steam_id: String) -> int:

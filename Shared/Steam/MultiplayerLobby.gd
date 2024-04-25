@@ -35,6 +35,7 @@ func _setup() -> void:
 func _ready() -> void:
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
 	Global.SignalManager.kicked_from_lobby.connect(leaveLobby)
+	Global.SignalManager.start_game.connect(startGame)
 
 
 	# This will only happen if someone isn't already in a populated lobby (i.e. they're by themselves)
@@ -156,8 +157,8 @@ func inviteFriends() -> void:
 
 
 func startGame() -> void:
-	get_tree().change_scene_to_packed(Global.GAME_SCENE)
 	Global.SoundManager.playSound('start_game')
+	get_parent().toggle_screen('Game')
 
 
 func readyUp() -> void:
@@ -216,14 +217,11 @@ func _on_leave_lobby_button_pressed() -> void:
 	Global.SignalManager.leave_lobby_button_pressed.emit()
 	if Global.SteamManager.LOBBY_ID != 0:
 		leaveLobby()
-	get_parent()._on_back_button_pressed()
 
 
 func _on_start_game_button_pressed() -> void:
 	Global.SoundManager.playSound('select')
 	Global.SignalManager.start_game_button_pressed.emit()
-	if Global.SteamManager.IS_HOST:
-		toEveryone('startGame', '')
 	startGame()
 
 
