@@ -2,7 +2,6 @@ extends Node
 
 # MANAGERS
 @onready var SoundManager = $SoundManager
-@onready var AnimationManager = $AnimationManager
 @onready var SignalManager = $SignalManager
 @onready var SteamManager = $SteamManager
 
@@ -30,6 +29,9 @@ var PLAYERHOST_STEAM_ID: String
 #const TITLE_SCREEN_SCENE = preload('res://Shared/TitleScreen/MainMenu.tscn')
 
 
+# CLASSES
+const PLAYER_CLASS = preload('res://Shared/Steam/Player.gd')
+
 
 # SOUNDS
 var sound_node = load("res://Shared/Global/Sound.tscn")
@@ -51,6 +53,12 @@ func _ready() -> void:
 	SCREEN_CENTER = Vector2(SCREEN_DIMENSIONS.x/2, SCREEN_DIMENSIONS.y/2)
 
 	get_tree().get_root().connect('size_changed', handleScreenResize)
+
+	# This solves any weirdness from happening where certain things aren't ready in other Singletons
+	#		by the time we get to their _ready() function
+	for child in get_children():
+		if child.has_method('_setup'):
+			child._setup()
 
 
 func _process(_delta) -> void:

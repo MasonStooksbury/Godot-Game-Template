@@ -11,6 +11,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.SignalManager.open_screen.connect(openScreen)
 	toggle_screen('~', true)
 
 
@@ -28,10 +29,18 @@ func toggle_screen(screen_name: String, toggle_title: bool = false) -> void:
 	camera.global_position = Global.SCREEN_CENTER
 
 
+func openScreen(screen: String) -> void:
+	if screen == 'Title':
+		toggle_screen('~', true)
+	else:
+		toggle_screen(screen)
+
+
 func _on_new_game_button_pressed():
 	toggle_screen('Game')
 
 func _on_multiplayer_button_pressed():
+	Global.SignalManager.create_lobby.emit()
 	toggle_screen('Multiplayer')
 
 func _on_settings_button_pressed():
