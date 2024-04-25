@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhduwrkqr70qp"]
+
+[ext_resource type="Script" path="res://Shared/Global/Global.gd" id="1_k6oqq"]
+[ext_resource type="Script" path="res://Shared/Global/SteamManager.gd" id="2_ergqg"]
+[ext_resource type="Script" path="res://Shared/Global/SoundManager.gd" id="2_kp8ah"]
+[ext_resource type="Script" path="res://Shared/Global/SignalManager.gd" id="4_no50i"]
+
+[node name="Global" type="Node"]
+script = ExtResource("1_k6oqq")
+
+[node name="SignalManager" type="Node" parent="."]
+script = ExtResource("4_no50i")
+
+[node name="SteamManager" type="Node" parent="."]
+script = ExtResource("2_ergqg")
+
+[node name="SoundManager" type="Node" parent="."]
+script = ExtResource("2_kp8ah")

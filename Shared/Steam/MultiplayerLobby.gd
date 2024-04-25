@@ -134,10 +134,9 @@ func displayMessage(message) -> void:
 
 
 func leaveLobby() -> void:
-	if Global.SteamManager.LOBBY_ID != 0:
-		chat_panel.setLabelText('Lobby Name')
-		clearChatPanel()
-	get_parent().toggle_screen('~', true)
+	chat_panel.setLabelText('Lobby Name')
+	clearChatPanel()
+	Global.SignalManager.open_screen.emit('Title')
 
 
 func clearChatPanel() -> void:

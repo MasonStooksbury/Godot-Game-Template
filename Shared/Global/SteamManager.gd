@@ -48,7 +48,7 @@ func _setup():
 	connectSteamSignals("p2p_session_connect_fail", "_on_P2P_Session_Connect_Fail")
 	connectSteamSignals("avatar_loaded", "_loaded_avatar")
 	Global.SignalManager.kick_button_pressed.connect(kickButtonPressed) # Arguments passed: player_steam_id
-	# Global.SignalManager.create_lobby.connect(createLobby)
+	Global.SignalManager.create_lobby.connect(createLobby)
 	Global.SignalManager.start_game_button_pressed.connect(startGameButtonPressed)
 	Global.SignalManager.ready_button_pressed.connect(readyButtonPressed)
 	Global.SignalManager.leave_lobby_button_pressed.connect(leaveLobby)
@@ -253,6 +253,9 @@ func _on_Lobby_Joined(lobby_id, _permissions, _locked, _response) -> void:
 	if playerhost_steam_id == null or playerhost_steam_id != PLAYERHOST_STEAM_ID:
 		IS_HOST = false
 		PLAYERHOST_STEAM_ID = playerhost_steam_id
+
+	if external_invite:
+		Global.SignalManager.open_screen.emit('Multiplayer')
 
 	Global.SignalManager.player_joined_lobby.emit()
 	print('joined lobby?')

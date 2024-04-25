@@ -1,5 +1,10 @@
 extends Node
 
+
+# Main Menu
+signal open_screen
+
+
 # Multiplayer Lobby Signals
 signal kick_button_pressed(player_steam_id: String)
 signal kicked_from_lobby

@@ -71,4 +71,4 @@ func playPreview(type: String) -> void:
 func _on_back_button_pressed():
 	Global.SoundManager.playSound('select')
 	Global.SoundManager.saveConfigData()
-	get_parent()._on_back_button_pressed()
+	Global.SignalManager.open_screen.emit('Title')
