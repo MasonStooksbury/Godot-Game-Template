@@ -1,9 +1,11 @@
 extends Control
 
-@onready var master_volume_slider = $VolumeControlsVBox/MasterVolumeHBox/MasterVolumeSlider
-@onready var music_volume_slider = $VolumeControlsVBox/MusicVolumeHBox/MusicVolumeSlider
-@onready var effects_volume_slider = $VolumeControlsVBox/EffectsVolumeHBox/EffectsVolumeSlider
-@onready var ui_volume_slider = $VolumeControlsVBox/UIVolumeHBox/UIVolumeSlider
+const CONFIG_FILENAME: String = 'settings.cfg'
+
+@onready var master_volume_slider = $ScreenVBox/VolumeControlsVBox/MasterVolumeSlider
+@onready var music_volume_slider = $ScreenVBox/VolumeControlsVBox/MusicVolumeSlider
+@onready var ui_volume_slider = $ScreenVBox/VolumeControlsVBox/UIVolumeSlider
+@onready var effects_volume_slider = $ScreenVBox/VolumeControlsVBox/EffectsVolumeSlider
 
 var done_loading = false
 
@@ -12,6 +14,11 @@ func _ready() -> void:
 	Global.SoundManager.music_volume_updated.connect(_music_volume_signal)
 	Global.SoundManager.effects_volume_updated.connect(_effects_volume_signal)
 	Global.SoundManager.ui_volume_updated.connect(_ui_volume_signal)
+
+	#master_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
+	#music_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
+	#ui_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
+	#effects_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
 
 	# I realize that technically we're loading the config twice, but it's necessary to make sure the sliders are set properly
 	#	cuts down on coupled code if we do it this way.
@@ -22,35 +29,41 @@ func _ready() -> void:
 
 # These respond to signals from the config file being loaded
 func _master_volume_signal(new_value):
-	master_volume_slider.value = new_value
+	#master_volume_slider.value = new_value
+	master_volume_slider.setSliderValue(new_value)
+	#master_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _music_volume_signal(new_value):
-	music_volume_slider.value = new_value
+	#music_volume_slider.value = new_value
+	music_volume_slider.setSliderValue(new_value)
+	#music_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _effects_volume_signal(new_value):
-	effects_volume_slider.value = new_value
+	#effects_volume_slider.value = new_value
+	effects_volume_slider.setSliderValue(new_value)
+	#effects_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _ui_volume_signal(new_value):
-	ui_volume_slider.value = new_value
+	#ui_volume_slider.value = new_value
+	ui_volume_slider.setSliderValue(new_value)
+	#ui_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 
 
-# These signals respond to UI changes to the slider values
-func _on_master_volume_slider_value_changed(value):
-	Global.SoundManager.master_volume = value
-
-
-func _on_music_volume_slider_value_changed(value):
-	Global.SoundManager.music_volume = value
-
-
-func _on_effects_volume_slider_value_changed(value):
-	Global.SoundManager.effects_volume = value
-	playPreview('effects')
-
-func _on_ui_volume_slider_value_changed(value):
-	Global.SoundManager.ui_volume = value
-	playPreview('ui')
+# This signal responds to UI changes to the slider
+func _on_slider_value_changed(slider_name: String, new_value: float):
+	if 'Master' in slider_name:
+		Global.SoundManager.master_volume = new_value
+		#playPreview('master')
+	elif 'Music' in slider_name:
+		Global.SoundManager.music_volume = new_value
+		#playPreview('master')
+	elif 'UI' in slider_name:
+		Global.SoundManager.effects_volume = new_value
+		playPreview('effects')
+	elif 'Effects' in slider_name:
+		Global.SoundManager.ui_volume = new_value
+		playPreview('ui')
 
 
 func playPreview(type: String) -> void:
@@ -72,3 +85,7 @@ func _on_back_button_pressed():
 	Global.SoundManager.playSound('select')
 	Global.SoundManager.saveConfigData()
 	Global.SignalManager.open_screen.emit('Title')
+
+
+func _on_back_button_mouse_entered():
+	Global.SoundManager.playSound('hover')

@@ -1,0 +1,6 @@
+[gd_resource type="Theme" format=3 uid="uid://10q1ifvls3p3"]
+
+[resource]
+CreditsCategoryLabel/base_type = &"Label"
+CreditsCategoryLabel/colors/font_color = Color(0.894118, 0.341176, 0.180392, 1)
+CreditsCategoryLabel/font_sizes/font_size = 25

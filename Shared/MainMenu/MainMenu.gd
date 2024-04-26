@@ -5,7 +5,6 @@ extends Control
 @onready var multiplayer_screen = $MultiplayerScreen
 @onready var settings_screen = $SettingsScreen
 @onready var credits_screen = $CreditsScreen
-@onready var camera = $Camera
 
 @onready var screens = [title_screen, multiplayer_screen, settings_screen, credits_screen, game]
 
@@ -26,7 +25,6 @@ func toggle_screen(screen_name: String, toggle_title: bool = false) -> void:
 	for screen in screens:
 		screen.visible = screen_name in screen.name
 	title_screen.visible = toggle_title
-	camera.global_position = Global.SCREEN_CENTER
 
 
 func openScreen(screen: String) -> void:
@@ -52,5 +50,5 @@ func _on_credits_button_pressed():
 func _on_back_button_pressed():
 	toggle_screen('~', true)
 
-
-
+func _on_quit_button_pressed():
+	get_tree().quit()

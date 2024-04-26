@@ -1,0 +1,41 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://ccanvbr4jqq6b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehri8"]
+bg_color = Color(0.180392, 0.156863, 0.164706, 0.772549)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0i1t"]
+bg_color = Color(0.278431, 0.243137, 0.254902, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1sky"]
+bg_color = Color(0.180392, 0.156863, 0.164706, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fh5ax"]
+bg_color = Color(0.0901961, 0.0784314, 0.0823529, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[resource]
+Button/colors/font_color = Color(0.894118, 0.341176, 0.180392, 1)
+Button/colors/font_disabled_color = Color(0.894118, 0.341176, 0.180392, 0.501961)
+Button/colors/font_focus_color = Color(0.894118, 0.341176, 0.180392, 1)
+Button/colors/font_hover_color = Color(0.894118, 0.341176, 0.180392, 1)
+Button/colors/font_hover_pressed_color = Color(0.894118, 0.341176, 0.180392, 1)
+Button/colors/font_pressed_color = Color(0.894118, 0.341176, 0.180392, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_ehri8")
+Button/styles/hover = SubResource("StyleBoxFlat_p0i1t")
+Button/styles/normal = SubResource("StyleBoxFlat_h1sky")
+Button/styles/pressed = SubResource("StyleBoxFlat_fh5ax")

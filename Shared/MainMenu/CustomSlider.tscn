@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhm06mgthd21o"]
+
+[ext_resource type="Theme" uid="uid://c1ukeurbdnv7e" path="res://Themes/CustomSlider.tres" id="1_vgpjo"]
+[ext_resource type="Script" path="res://Shared/MainMenu/CustomSlider.gd" id="2_kq8d2"]
+
+[node name="PanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(451, 73)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.5
+offset_top = -36.5
+offset_right = 225.5
+offset_bottom = 36.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_vgpjo")
+script = ExtResource("2_kq8d2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.180392, 0.156863, 0.164706, 1)
+theme_override_font_sizes/font_size = 20
+text = "EXAMPLE TEXT"
+
+[node name="HSlider" type="HSlider" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 3.0
+
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/HSlider" to="." method="_onSliderValueChanged"]
