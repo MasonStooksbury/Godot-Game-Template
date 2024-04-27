@@ -15,11 +15,6 @@ func _ready() -> void:
 	Global.SoundManager.effects_volume_updated.connect(_effects_volume_signal)
 	Global.SoundManager.ui_volume_updated.connect(_ui_volume_signal)
 
-	#master_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
-	#music_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
-	#ui_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
-	#effects_volume_slider.slider_value_changed.connect(_on_slider_value_changed)
-
 	# I realize that technically we're loading the config twice, but it's necessary to make sure the sliders are set properly
 	#	cuts down on coupled code if we do it this way.
 	# This could also be solved by making ones Main Menu one scene instead of many
@@ -29,24 +24,16 @@ func _ready() -> void:
 
 # These respond to signals from the config file being loaded
 func _master_volume_signal(new_value):
-	#master_volume_slider.value = new_value
 	master_volume_slider.setSliderValue(new_value)
-	#master_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _music_volume_signal(new_value):
-	#music_volume_slider.value = new_value
 	music_volume_slider.setSliderValue(new_value)
-	#music_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _effects_volume_signal(new_value):
-	#effects_volume_slider.value = new_value
 	effects_volume_slider.setSliderValue(new_value)
-	#effects_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 func _ui_volume_signal(new_value):
-	#ui_volume_slider.value = new_value
 	ui_volume_slider.setSliderValue(new_value)
-	#ui_volume_percentage_label.text = '  %s%%' % str(new_value*100)
 
 
 
