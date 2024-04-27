@@ -1,4 +1,4 @@
-# Godot-Game-Template | 4.2.1
+# Godot-Game-Template | 4.2.2
 The purpose of this project is to have a template with a ton of boilerplate code that most games will use. Whether that's common shaders, UI elements, movement code, etc. This will have all kinds of code for any project to get off the ground and running. Since it includes 2D and 3D, as well as multiple genres, this repository will hopefully make it easy to clone and simply delete the code you won't need for your game. Making it perfect for new projects, prototyping, and Game Jams.
 
 <br>
