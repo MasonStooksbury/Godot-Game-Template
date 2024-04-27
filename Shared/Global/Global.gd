@@ -1,9 +1,10 @@
 extends Node
 
 # MANAGERS
-@onready var SoundManager = $SoundManager
 @onready var SignalManager = $SignalManager
 @onready var SteamManager = $SteamManager
+@onready var SoundManager = $SoundManager
+@onready var GameManager = $GameManager
 
 
 # MAIN

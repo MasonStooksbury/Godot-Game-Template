@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://brql4k667q03l"]
+[gd_scene load_steps=12 format=3 uid="uid://brql4k667q03l"]
 
 [ext_resource type="Script" path="res://Shared/MainMenu/MainMenu.gd" id="1_0aonn"]
 [ext_resource type="PackedScene" uid="uid://eqq4xrm6rs41" path="res://Shared/MainMenu/MenuButton.tscn" id="1_x40x4"]
 [ext_resource type="Theme" uid="uid://dpww4skimgrkf" path="res://Themes/MenuButton.tres" id="3_3cbfe"]
 [ext_resource type="Script" path="res://Shared/MainMenu/SettingsScreen.gd" id="3_aonsm"]
-[ext_resource type="Script" path="res://Shared/MainMenu/Game.gd" id="3_f1n05"]
 [ext_resource type="Script" path="res://Shared/Steam/MultiplayerLobby.gd" id="3_yer6t"]
+[ext_resource type="Script" path="res://Shared/MainMenu/SingleplayerScreen.gd" id="4_y0wrq"]
 [ext_resource type="PackedScene" uid="uid://cplb22liq6u7f" path="res://Shared/Steam/ChatPanel.tscn" id="6_g1pbt"]
 [ext_resource type="PackedScene" uid="uid://dhm06mgthd21o" path="res://Shared/MainMenu/CustomSlider.tscn" id="6_taoxl"]
 [ext_resource type="Theme" uid="uid://4pp88ienoax4" path="res://Themes/BackButton.tres" id="7_xhxjq"]
+[ext_resource type="Script" path="res://Shared/Steam/GenericPlayer.gd" id="10_x4v7x"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_8ria7"]
 
@@ -76,11 +77,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 25
 
-[node name="NewGameButton" parent="TitleScreen/Menu/Buttons" instance=ExtResource("1_x40x4")]
+[node name="SingleplayerButton" parent="TitleScreen/Menu/Buttons" instance=ExtResource("1_x40x4")]
 layout_mode = 2
 theme = ExtResource("3_3cbfe")
 theme_override_font_sizes/font_size = 40
-text = "New Game"
+text = "Singleplayer"
 flat = false
 
 [node name="MultiplayerButton" parent="TitleScreen/Menu/Buttons" instance=ExtResource("1_x40x4")]
@@ -109,6 +110,30 @@ layout_mode = 2
 theme = ExtResource("3_3cbfe")
 theme_override_font_sizes/font_size = 40
 text = "Quit"
+
+[node name="SingleplayerScreen" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_y0wrq")
+
+[node name="BackButton" type="Button" parent="SingleplayerScreen"]
+layout_mode = 0
+offset_right = 195.0
+offset_bottom = 77.0
+text = "Back"
+
+[node name="StartGameButton" type="Button" parent="SingleplayerScreen"]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 57.0
+offset_right = 700.0
+offset_bottom = 185.0
+text = "Start Game"
 
 [node name="MultiplayerScreen" type="Control" parent="."]
 visible = false
@@ -300,6 +325,7 @@ theme_override_font_sizes/font_size = 40
 text = "Back"
 
 [node name="CreditsScreen" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -383,11 +409,18 @@ flat = false
 
 [node name="Game" type="Node2D" parent="."]
 visible = false
-script = ExtResource("3_f1n05")
+script = ExtResource("10_x4v7x")
 
-[connection signal="mouse_entered" from="TitleScreen/Menu/Buttons/NewGameButton" to="." method="_on_mouse_entered"]
-[connection signal="pressed" from="TitleScreen/Menu/Buttons/NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="TitleScreen/Menu/Buttons/NewGameButton" to="." method="_on_pressed"]
+[node name="Button" type="Button" parent="Game"]
+offset_left = 291.0
+offset_top = 241.0
+offset_right = 539.0
+offset_bottom = 343.0
+text = "Back"
+
+[connection signal="mouse_entered" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_pressed"]
+[connection signal="pressed" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_singleplayer_button_pressed"]
 [connection signal="mouse_entered" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_mouse_entered"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_pressed"]
@@ -398,6 +431,8 @@ script = ExtResource("3_f1n05")
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/CreditsButton" to="." method="_on_pressed"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="SingleplayerScreen/BackButton" to="SingleplayerScreen" method="_on_button_pressed"]
+[connection signal="pressed" from="SingleplayerScreen/StartGameButton" to="SingleplayerScreen" method="_on_start_game_button_pressed"]
 [connection signal="send_message_button_pressed" from="MultiplayerScreen/ChatPanel" to="MultiplayerScreen" method="_on_send_message_button_pressed"]
 [connection signal="mouse_entered" from="MultiplayerScreen/InviteFriendsButton" to="MultiplayerScreen" method="_on_hover"]
 [connection signal="pressed" from="MultiplayerScreen/InviteFriendsButton" to="MultiplayerScreen" method="_on_invite_friends_button_pressed"]
@@ -414,3 +449,4 @@ script = ExtResource("3_f1n05")
 [connection signal="pressed" from="SettingsScreen/BackButton" to="SettingsScreen" method="_on_back_button_pressed"]
 [connection signal="pressed" from="CreditsScreen/CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" to="." method="_on_pressed"]
 [connection signal="pressed" from="CreditsScreen/CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Game/Button" to="Game" method="_on_button_pressed"]
