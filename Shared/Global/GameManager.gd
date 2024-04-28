@@ -5,10 +5,10 @@ extends Node
 @onready var players: Array
 
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func _setup():
 	Global.SignalManager.read_p2p_packet.connect(readP2PPacket)
+
+
 
 
 func startGame(type: String, game_data: Dictionary = {}):
