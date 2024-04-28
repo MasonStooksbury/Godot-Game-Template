@@ -27,4 +27,5 @@ func _on_button_pressed():
 
 func _on_button_2_pressed():
 	#Global.SteamManager.toSpecificPlayer('itdo')
+	Global.SteamManager.toEveryone('itdo')
 	pass

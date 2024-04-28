@@ -200,8 +200,8 @@ func checkLobbyReadyStatus() -> void:
 	start_game_button.disabled = not (false not in ready_values_array)
 
 
-
-func playerJoinedLobby() -> void:
+# player_steam_id is not used yet, but will be when we implement drop/rejoin logic
+func playerJoinedLobby(_player_steam_id: String = '') -> void:
 	print('in here')
 	start_game_button.set_visible(Global.SteamManager.IS_HOST)
 

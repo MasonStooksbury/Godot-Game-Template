@@ -270,7 +270,7 @@ func _on_Lobby_Chat_Update(_lobby_id, _changed_id, player_steam_id, chat_state) 
 	match chat_state:
 		1:
 			displayMessage('%s has joined the lobby! :D' % str(changer))
-			Global.SignalManager.player_joined_lobby.emit(str(player_steam_id))
+			Global.SignalManager.player_joined_lobby.emit()
 		2:
 			displayMessage('%s has left the lobby :(' % str(changer))
 			Global.SignalManager.player_disconnected.emit(str(player_steam_id))
@@ -389,15 +389,17 @@ func readP2PPacket() -> void:
 
 		# Append logic here to deal with packet data
 		print(readable)
-		match readable['type']:
-			'start': displayMessage('[STEAM] Starting P2P game...')
-			'startGame': startGame()
-			'ready': Global.SignalManager.handle_ready_up.emit(player_steam_id)
-			'unready': Global.SignalManager.handle_unready.emit(player_steam_id)
-			'kick': kickedFromLobby()
-		if IS_HOST:
+
+		if Global.SteamManager.IS_HOST:
 			match readable['type']:
 				'handshake': Global.SignalManager.check_lobby_ready_status.emit()
+		else:
+			match readable['type']:
+				'start': displayMessage('[STEAM] Starting P2P game...')
+				'startGame': startGame()
+				'ready': Global.SignalManager.handle_ready_up.emit(player_steam_id)
+				'unready': Global.SignalManager.handle_unready.emit(player_steam_id)
+				'kick': kickedFromLobby()
 
 
 func sendP2PPacket(target: int, packet_data_dictionary: Dictionary) -> void:
