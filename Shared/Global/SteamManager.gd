@@ -393,13 +393,14 @@ func readP2PPacket() -> void:
 		if Global.SteamManager.IS_HOST:
 			match readable['type']:
 				'handshake': Global.SignalManager.check_lobby_ready_status.emit()
-		else:
-			match readable['type']:
-				'start': displayMessage('[STEAM] Starting P2P game...')
-				'startGame': startGame()
 				'ready': Global.SignalManager.handle_ready_up.emit(player_steam_id)
 				'unready': Global.SignalManager.handle_unready.emit(player_steam_id)
+		else:
+			match readable['type']:
+				'start': displayMessage('[STEAM] Starting P2P game...') # TODO: Is this used?
+				'startGame': startGame()
 				'kick': kickedFromLobby()
+		Global.SignalManager.read_p2p_packet.emit(player_steam_id, readable)
 
 
 func sendP2PPacket(target: int, packet_data_dictionary: Dictionary) -> void:

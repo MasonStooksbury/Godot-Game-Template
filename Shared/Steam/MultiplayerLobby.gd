@@ -183,6 +183,7 @@ func unready() -> void:
 
 
 func handleReadyUp(steam_id) -> void:
+	print('handleReadyUp')
 	Global.SteamManager.LOBBY_MEMBERS[Global.SteamManager.getPlayerIndexBySteamID(steam_id)].is_ready = true
 	checkLobbyReadyStatus()
 

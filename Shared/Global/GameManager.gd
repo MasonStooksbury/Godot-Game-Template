@@ -8,7 +8,7 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	Global.SignalManager.read_p2p_packet.connect(readP2PPacket)
 
 
 func startGame(type: String, game_data: Dictionary = {}):
@@ -33,4 +33,11 @@ func startGame(type: String, game_data: Dictionary = {}):
 
 
 
+func readP2PPacket(player_steam_id: String, readable: Dictionary) -> void:
+	if Global.SteamManager.IS_HOST:
+		match readable['type']:
+			'itdo': print('it do')
+	else:
+		match readable['type']:
+			'itdo': print('it dont')
 

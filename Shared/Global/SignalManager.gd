@@ -22,3 +22,4 @@ signal check_max_lobby_members_reached
 signal reorganize_and_render
 signal display_message
 signal check_lobby_ready_status
+signal read_p2p_packet(player_steam_id: String, readable: Dictionary)
