@@ -135,6 +135,29 @@ offset_right = 700.0
 offset_bottom = 185.0
 text = "Start Game"
 
+[node name="Label" type="Label" parent="SingleplayerScreen"]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 307.0
+offset_right = 163.0
+offset_bottom = 330.0
+text = "AI Players
+"
+
+[node name="OptionButton" type="OptionButton" parent="SingleplayerScreen/Label"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 33.0
+offset_right = 149.0
+offset_bottom = 78.0
+item_count = 3
+popup/item_0/text = "1"
+popup/item_0/id = 0
+popup/item_1/text = "2"
+popup/item_1/id = 1
+popup/item_2/text = "3"
+popup/item_2/id = 2
+
 [node name="MultiplayerScreen" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -408,7 +431,6 @@ text = "Back"
 flat = false
 
 [node name="Game" type="Node2D" parent="."]
-visible = false
 script = ExtResource("10_x4v7x")
 
 [node name="Button" type="Button" parent="Game"]
@@ -418,9 +440,17 @@ offset_right = 539.0
 offset_bottom = 343.0
 text = "Back"
 
+[node name="Button2" type="Button" parent="Game"]
+offset_left = 752.0
+offset_top = 207.0
+offset_right = 950.0
+offset_bottom = 274.0
+text = "test1
+"
+
 [connection signal="mouse_entered" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_mouse_entered"]
-[connection signal="pressed" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_pressed"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_singleplayer_button_pressed"]
+[connection signal="pressed" from="TitleScreen/Menu/Buttons/SingleplayerButton" to="." method="_on_pressed"]
 [connection signal="mouse_entered" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_mouse_entered"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/MultiplayerButton" to="." method="_on_pressed"]
@@ -433,6 +463,7 @@ text = "Back"
 [connection signal="pressed" from="TitleScreen/Menu/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="SingleplayerScreen/BackButton" to="SingleplayerScreen" method="_on_button_pressed"]
 [connection signal="pressed" from="SingleplayerScreen/StartGameButton" to="SingleplayerScreen" method="_on_start_game_button_pressed"]
+[connection signal="item_selected" from="SingleplayerScreen/Label/OptionButton" to="SingleplayerScreen" method="_on_option_button_item_selected"]
 [connection signal="send_message_button_pressed" from="MultiplayerScreen/ChatPanel" to="MultiplayerScreen" method="_on_send_message_button_pressed"]
 [connection signal="mouse_entered" from="MultiplayerScreen/InviteFriendsButton" to="MultiplayerScreen" method="_on_hover"]
 [connection signal="pressed" from="MultiplayerScreen/InviteFriendsButton" to="MultiplayerScreen" method="_on_invite_friends_button_pressed"]
@@ -450,3 +481,4 @@ text = "Back"
 [connection signal="pressed" from="CreditsScreen/CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" to="." method="_on_pressed"]
 [connection signal="pressed" from="CreditsScreen/CenterContainer/MarginContainer/VBoxContainer/Footer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Game/Button" to="Game" method="_on_button_pressed"]
+[connection signal="pressed" from="Game/Button2" to="Game" method="_on_button_2_pressed"]

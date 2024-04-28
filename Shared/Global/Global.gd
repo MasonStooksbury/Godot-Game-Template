@@ -31,7 +31,8 @@ var PLAYERHOST_STEAM_ID: String
 
 
 # CLASSES
-const PLAYER_CLASS = preload('res://Shared/Steam/Player.gd')
+const PLAYER_CLASS = preload('res://Shared/Steam/ClassPlayer.gd')
+const CPU_PLAYER_CLASS = preload('res://Shared/Steam/ClassCPUPlayer.gd')
 
 
 # SOUNDS

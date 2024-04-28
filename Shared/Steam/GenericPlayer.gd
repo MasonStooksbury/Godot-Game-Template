@@ -6,11 +6,6 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 
 
 func drawCard():
@@ -28,3 +23,8 @@ func drawCard():
 
 func _on_button_pressed():
 	Global.SignalManager.open_screen.emit('Title')
+
+
+func _on_button_2_pressed():
+	#Global.SteamManager.toSpecificPlayer('itdo')
+	pass

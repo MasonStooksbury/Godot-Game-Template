@@ -1,8 +1,5 @@
 extends Node
 
-# MAIN
-var SCREEN_DIMENSIONS
-var SCREEN_CENTER
 
 # STEAM
 var OWNED = false
@@ -18,18 +15,6 @@ var LOBBY_INVITE_ARG = false
 var LOBBY_MAX_MEMBERS = 15 # TODO: What should this realistically be?
 var IS_HOST = false
 var PLAYERHOST_STEAM_ID
-
-
-# SCENES
-#const DUMMY_PLAYER_SCENE = preload('res://DummyPlayer.tscn')
-
-# SCRIPTS
-var REGULAR_PLAYER_SCRIPT = load('res://Shared/Steam/RegularPlayer.gd')
-var PLAYERHOST_SCRIPT = load('res://Shared/Steam/PlayerHost.gd')
-
-# CLASS SCRIPTS
-var PLAYER_CLASS = load('res://Shared/Steam/Player.gd')
-
 
 var external_invite: bool = false
 
