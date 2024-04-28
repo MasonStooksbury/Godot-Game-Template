@@ -29,9 +29,13 @@ func startGame(type: String, game_data: Dictionary = {}):
 		# We need to deep copy so that future actions don't ruin the actual members themselves
 		players = Global.LOBBY_MEMBERS.duplicate(true)
 
+	initializeGame()
+
 	Global.SignalManager.open_screen.emit('Game')
 
 
+func initializeGame() -> void:
+	pass
 
 func readP2PPacket(player_steam_id: String, readable: Dictionary) -> void:
 	if Global.SteamManager.IS_HOST:

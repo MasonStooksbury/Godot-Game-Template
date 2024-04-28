@@ -400,6 +400,9 @@ func readP2PPacket() -> void:
 				'start': displayMessage('[STEAM] Starting P2P game...') # TODO: Is this used?
 				'startGame': startGame()
 				'kick': kickedFromLobby()
+
+		# This is so that, once the game starts, the GameManager can handle remaining input
+		#	and call back here whenever necessary
 		Global.SignalManager.read_p2p_packet.emit(player_steam_id, readable)
 
 
