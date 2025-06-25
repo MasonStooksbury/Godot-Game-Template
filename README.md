@@ -48,6 +48,10 @@ In order to make things as consistent as possible we need similar settings. Most
 `Text Editor > Script List`
  - Sort Scripts By: `None`
    - When working with multiple scripts open at once, I find it easy to move them around and organize them in the inspector, but when you save, Godot will re-sort those scripts based on this setting. By putting `None`, you tell Godot to not sort them which is super helpful
+  
+`Interface > Theme`
+ - Base Color: `#364a36`
+ - Accent Color: `#71fa70` 
 
 `Interface > Inspector > Default Color Picker Mode`
  - `HSV`
